@@ -1,0 +1,43 @@
+# E01: peer-audit signal separation.
+# Inherits from base.yaml. Only fields listed here override the base.
+
+experiment:
+  name: e01_signal_separation
+  seed: 0
+  num_seeds: 30                    # E1 uses 30 seeds because effect sizes are small
+  output_dir: runs/e01/
+
+federation:
+  num_clients: 100
+  num_clusters: 5
+  rounds: 0                        # E1 does not run the full loop
+  local_epochs: 2                  # only used to fit truthful client models
+  batch_size: 64
+  client_lr: 0.01
+
+data:
+  name: synthetic_mixture
+  input_dim: 20
+  num_classes: 10
+  samples_per_client_range: [200, 500]
+  intra_cluster_std: 0.5
+  inter_cluster_shift: 3.0
+
+adversary:
+  fraction_adversarial: 0.0        # adversaries are constructed inside E1 by projection
+  attack_type: mimicry
+  mimicry_strength: 1.0
+  collusion_fraction: 0.0
+
+mechanism:
+  peer_audit_fanout_c: 3
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: exponential
+  partition_hidden: [64, 64]
+  partition_lr: 0.001
+  surplus_floor: 0.0001
+  budget_balance_tolerance: 1.0e-8
+
+evaluation:
+  bootstrap_iters: 2000

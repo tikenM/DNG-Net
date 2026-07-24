@@ -1,0 +1,11 @@
+# E14 cross-dataset generalization driver.
+# Points at three dataset configs. Each is executed with the standard metric
+# bundle and results are collated. Requires the referenced configs to exist
+# and, for femnist/shakespeare, LEAF preprocessed data to be available at
+# the paths declared inside those configs.
+
+datasets:
+  synthetic: configs/base.yaml
+  cifar10:   configs/cifar10.yaml
+  femnist:   configs/femnist.yaml
+  # shakespeare: configs/shakespeare.yaml   # uncomment once LEAF data is ready

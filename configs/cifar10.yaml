@@ -1,0 +1,42 @@
+# CIFAR-10 with Dirichlet non-IID partitioning across K latent groups.
+# torchvision downloads CIFAR-10 to `data.root` on first run.
+
+experiment:
+  name: cifar10_dirichlet
+  seed: 0
+  num_seeds: 5
+  output_dir: runs/cifar10/
+
+federation:
+  num_clients: 100
+  num_clusters: 5
+  rounds: 100
+  local_epochs: 1
+  batch_size: 64
+  client_lr: 0.01
+
+data:
+  name: cifar10_dirichlet
+  root: ./data                      # torchvision cache directory
+  dirichlet_alpha: 0.3              # smaller -> more non-IID within cluster
+
+adversary:
+  fraction_adversarial: 0.1
+  attack_type: mimicry
+  mimicry_strength: 1.0
+  collusion_fraction: 0.0
+
+mechanism:
+  peer_audit_fanout_c: 3
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: exponential
+  partition_hidden: [128, 64]
+  partition_lr: 0.001
+  surplus_floor: 0.0001
+
+evaluation:
+  ir_tolerance: 0.05
+  core_audit_max_size: 3
+  core_sampled_coalitions: 200
+  bootstrap_iters: 2000

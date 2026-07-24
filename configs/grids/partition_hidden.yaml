@@ -1,0 +1,7 @@
+axis: partition_hidden
+values: [[32], [64,64], [128,64], [128,128], [256,128,64]]
+selection:
+  metric: ari
+  higher_is_better: true
+  tiebreaker: ir_violation_frac
+  tiebreaker_lower_is_better: true

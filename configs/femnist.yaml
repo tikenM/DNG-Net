@@ -1,0 +1,46 @@
+# FEMNIST from the LEAF preprocessed format.
+# Prerequisite: run LEAF's preprocess.sh for FEMNIST once and point
+# `data.train_dir` and `data.test_dir` at the resulting json directories.
+# https://github.com/TalwalkarLab/leaf/tree/master/data/femnist
+
+experiment:
+  name: femnist
+  seed: 0
+  num_seeds: 5
+  output_dir: runs/femnist/
+
+federation:
+  num_clients: 200                  # subset of LEAF writers
+  num_clusters: 5
+  rounds: 100
+  local_epochs: 1
+  batch_size: 32
+  client_lr: 0.01
+
+data:
+  name: femnist
+  train_dir: /path/to/leaf/data/femnist/data/train
+  test_dir:  /path/to/leaf/data/femnist/data/test
+  cluster_by: digit_split           # or: writer
+  num_classes: 62                   # LEAF FEMNIST label set
+
+adversary:
+  fraction_adversarial: 0.1
+  attack_type: mimicry
+  mimicry_strength: 1.0
+  collusion_fraction: 0.0
+
+mechanism:
+  peer_audit_fanout_c: 3
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: exponential
+  partition_hidden: [128, 64]
+  partition_lr: 0.001
+  surplus_floor: 0.0001
+
+evaluation:
+  ir_tolerance: 0.05
+  core_audit_max_size: 3
+  core_sampled_coalitions: 200
+  bootstrap_iters: 2000

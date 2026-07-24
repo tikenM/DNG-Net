@@ -1,0 +1,50 @@
+# Base configuration for DNG-Net experiments.
+# Individual experiment configs inherit from this by shallow override.
+
+experiment:
+  name: base
+  seed: 0
+  num_seeds: 10
+  output_dir: runs/
+
+federation:
+  num_clients: 100
+  num_clusters: 5
+  rounds: 200
+  local_epochs: 1
+  batch_size: 64
+  client_lr: 0.01
+
+data:
+  name: synthetic_mixture
+  input_dim: 20
+  num_classes: 10
+  samples_per_client_range: [200, 500]
+  intra_cluster_std: 0.5
+  inter_cluster_shift: 3.0
+
+mechanism:
+  peer_audit_fanout_c: 3           # fan-out = c * log2(N)
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: exponential
+  partition_hidden: [64, 64]
+  partition_lr: 0.001
+  surplus_floor: 1.0e-4            # prevents log(0); reset heuristic
+  budget_balance_tolerance: 1.0e-8
+
+adversary:
+  fraction_adversarial: 0.1
+  attack_type: mimicry             # mimicry | free_ride | noise | targeted_allocation | none
+  mimicry_strength: 1.0
+  collusion_fraction: 0.0
+
+evaluation:
+  ir_tolerance: 0.05
+  core_audit_max_size: 4
+  core_sampled_coalitions: 100
+  bootstrap_iters: 2000
+
+logging:
+  log_every: 5
+  save_partitions: true

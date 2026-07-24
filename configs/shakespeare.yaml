@@ -1,0 +1,43 @@
+# Shakespeare next-character prediction.
+# Requires LEAF preprocessing; see https://github.com/TalwalkarLab/leaf
+
+experiment:
+  name: shakespeare
+  seed: 0
+  num_seeds: 3
+  output_dir: runs/shakespeare/
+
+federation:
+  num_clients: 50
+  num_clusters: 5
+  rounds: 50
+  local_epochs: 1
+  batch_size: 32
+  client_lr: 0.5
+
+data:
+  name: shakespeare
+  train_dir: /path/to/leaf/data/shakespeare/data/train
+  test_dir:  /path/to/leaf/data/shakespeare/data/test
+
+adversary:
+  fraction_adversarial: 0.0
+  attack_type: none
+  mimicry_strength: 0.0
+  collusion_fraction: 0.0
+
+mechanism:
+  peer_audit_fanout_c: 3
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: exponential
+  partition_hidden: [128, 64]
+  partition_lr: 0.001
+  partition_feature_mode: stats
+  surplus_floor: 0.0001
+
+evaluation:
+  ir_tolerance: 0.05
+  core_audit_max_size: 3
+  core_sampled_coalitions: 200
+  bootstrap_iters: 2000

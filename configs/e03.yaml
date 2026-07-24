@@ -1,0 +1,45 @@
+# E03: Core deviation audit.
+# Small N=20 to enable full coalition enumeration up to size 4.
+
+experiment:
+  name: e03_core_audit
+  seed: 0
+  num_seeds: 10
+  output_dir: runs/e03/
+
+federation:
+  num_clients: 20                  # small enough for enumeration
+  num_clusters: 3
+  rounds: 150
+  local_epochs: 2
+  batch_size: 32
+  client_lr: 0.01
+
+data:
+  name: synthetic_mixture
+  input_dim: 20
+  num_classes: 10
+  samples_per_client_range: [200, 400]
+  intra_cluster_std: 0.5
+  inter_cluster_shift: 3.0
+
+adversary:
+  fraction_adversarial: 0.0
+  attack_type: none
+  mimicry_strength: 0.0
+  collusion_fraction: 0.0
+
+mechanism:
+  peer_audit_fanout_c: 3
+  gumbel_tau_start: 1.0
+  gumbel_tau_end: 0.1
+  gumbel_anneal: exponential
+  partition_hidden: [64, 64]
+  partition_lr: 0.001
+  surplus_floor: 0.0001
+
+evaluation:
+  ir_tolerance: 0.05
+  core_audit_max_size: 4           # enumerate up to size 4
+  core_sampled_coalitions: 200     # sample this many for each larger size
+  bootstrap_iters: 2000
